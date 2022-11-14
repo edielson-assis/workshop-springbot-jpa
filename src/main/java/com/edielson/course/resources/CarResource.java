@@ -13,7 +13,7 @@ public class CarResource {
     
     @GetMapping
     public ResponseEntity<Car> findAll() {
-        Car c = new Car(1L, "Fox", 2015);
+        Car c = new Car(1L, "Fox", 2015, "");
         return ResponseEntity.ok().body(c);
     }
 }
