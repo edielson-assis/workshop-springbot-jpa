@@ -1,19 +1,33 @@
 package com.edielson.course.resources;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edielson.course.entities.Car;
+import com.edielson.course.services.CarService;
 
 @RestController
 @RequestMapping(value = "/cars")
 public class CarResource {
+
+    @Autowired
+    private CarService service;
     
     @GetMapping
-    public ResponseEntity<Car> findAll() {
-        Car c = new Car(1L, "Fox", 2015, "");
-        return ResponseEntity.ok().body(c);
+    public ResponseEntity<List<Car>> findAll() {
+        List<Car> list = service.findAll();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Car> findById(@PathVariable Long id) {
+        Car obj = service.findById(id);
+        return ResponseEntity.ok().body(obj);
     }
 }
