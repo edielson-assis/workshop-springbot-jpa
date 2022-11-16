@@ -13,6 +13,8 @@ import com.edielson.course.repositories.PersonRepository;
 import com.edielson.course.services.exceptions.DatabaseException;
 import com.edielson.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class PersonService {
     
@@ -45,9 +47,14 @@ public class PersonService {
     }
 
     public Person update(Long id, Person obj) {
-        Person entity = repository.getReferenceById(id);
-        updateData(entity, obj);
-        return repository.save(entity);
+        try {
+            Person entity = repository.getReferenceById(id);
+            updateData(entity, obj);
+            return repository.save(entity);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(Person entity, Person obj) {
